@@ -10,18 +10,25 @@ High density count pipeline
 
 #step 0: make ref fa file from gRNA_Dot1l_sequences check if duplicated sequences exist in    
 
-awk '{print ">"$1;print $2}' $ref'.txt' > $ref'.fa' module load Bowtie2 bowtie2-build $FA $NAME
+awk '{print ">"$1;print $2}' $ref'.txt' > $ref'.fa' 
+module load Bowtie2 
+bowtie2-build $FA $NAME
 
 #step 1: extract 20nt matched gRNA reads from original fastq files python gRNA_target.py @NB501311 *.fq pattern/default 
 pattern: CACCG([ACGT]{20})GTTTA   (default);                                                                                                                               
 User can also provided cutomized patterns for extractions
 
-#step 2: map extracted reads to gRNA ref by bowtie2 bowtie2 -x bt2.ref -U *_extracted.fastq -S *.sam -p 4 --very-sensitive-local --time
+#step 2: map extracted reads to gRNA ref by bowtie2.
 
-#step 3: count reads perfect match to 20nt gRNA ref and summarized count table grep 20M B7_C2_0_extracted.sam|awk '{print $3}' |sort|uniq -c |awk '{print $1,"\t",$2}'> *_count.txt
+bowtie2 -x bt2.ref -U *_extracted.fastq -S *.sam -p 4 --very-sensitive-local --time
+
+#step 3: count reads perfect match to 20nt gRNA ref and summarized count table 
+
+grep 20M B7_C2_0_extracted.sam|awk '{print $3}' |sort|uniq -c |awk '{print $1,"\t",$2}'> *_count.txt
 
 # running on hpc suncluster
-#cwd: crispr root folder folder #root folder structure: contains 
+#current work dir: crispr root folder
+#root folder structure: contains 
 fqfiles ---- where raw fastq files store  
 bowtie_index ---- gRNA lib bowtie index files 
 
