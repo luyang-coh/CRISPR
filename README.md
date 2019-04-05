@@ -13,8 +13,8 @@ High density count pipeline
 awk '{print ">"$1;print $2}' $ref'.txt' > $ref'.fa' module load Bowtie2 bowtie2-build $FA $NAME
 
 #step 1: extract 20nt matched gRNA reads from original fastq files python gRNA_target.py @NB501311 *.fq pattern/default 
-pattern: CACCG([ACGT]{20})GTTTA   (default)
-user can also provided cutomized patterns for extractions
+pattern: CACCG([ACGT]{20})GTTTA   (default);                                                                                                                               
+User can also provided cutomized patterns for extractions
 
 #step 2: map extracted reads to gRNA ref by bowtie2 bowtie2 -x bt2.ref -U *_extracted.fastq -S *.sam -p 4 --very-sensitive-local --time
 
